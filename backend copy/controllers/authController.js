@@ -2,10 +2,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Vendor = require('../models/Vendor');
 const Admin = require('../models/Admin');
-const { jwtSecret } = require('../config/secrets');
 
 const generateToken = (id, role) => {
-  return jwt.sign({ id: String(id), role }, jwtSecret(), { expiresIn: '7d' });
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
 // User Signup

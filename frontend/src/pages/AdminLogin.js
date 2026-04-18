@@ -19,7 +19,10 @@ const AdminLogin = () => {
       login(data);
       navigate('/admin/home');
     } catch (error) {
-      setErr(error.response?.data?.message || 'Login failed');
+      const d = error.response?.data;
+      const serverMsg =
+        typeof d === 'object' && d != null ? (d.message || d.error) : typeof d === 'string' ? d : null;
+      setErr(serverMsg || error.message || 'Login failed');
     }
   };
 
