@@ -1,12 +1,19 @@
 import axios from 'axios';
 
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_API_URL
-    : '/api';
+// In production, construct API URL from current domain or use explicit REACT_APP_API_URL
+const getBaseURL = () => {
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    // Fallback: use current domain with /api path
+    return `${window.location.origin}/api`;
+  }
+  return '/api';
+};
 
 const api = axios.create({
-  baseURL,
+  baseURL: getBaseURL(),
   headers: { 'Content-Type': 'application/json' },
 });
 
