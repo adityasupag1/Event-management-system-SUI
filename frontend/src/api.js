@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+// const API = axios.create({
+//   baseURL: 'http://localhost:5000/api',
+// });
+const api = axios.create({
+  baseURL: '/api',
+  headers: { 'Content-Type': 'application/json' },
 });
 
-API.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -12,7 +16,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-API.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -24,4 +28,4 @@ API.interceptors.response.use(
   }
 );
 
-export default API;
+export default api;
