@@ -13,9 +13,19 @@ connectDB().then(() => {
   initAdmin();
 });
 
-// Middleware
+// Middleware — allow local dev and production frontend (override via CLIENT_ORIGIN)
+const corsOrigins = new Set([
+  'http://localhost:3000',
+  'https://event-management-system-sui.vercel.app',
+]);
+if (process.env.CLIENT_ORIGIN) {
+  process.env.CLIENT_ORIGIN.split(',').forEach((o) => {
+    const trimmed = o.trim();
+    if (trimmed) corsOrigins.add(trimmed);
+  });
+}
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: [...corsOrigins],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));

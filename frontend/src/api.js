@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const defaultBaseURL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://event-management-system-sui.onrender.com/api'
+    : 'http://localhost:5000/api';
+
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
 });
 
 API.interceptors.request.use((config) => {
