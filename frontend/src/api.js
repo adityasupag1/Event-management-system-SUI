@@ -1,14 +1,19 @@
 import axios from 'axios';
 
-// Development: use same-origin `/api` so Create React App's `package.json` "proxy" forwards to the backend (avoids cross-port CORS and mixed strict-browser cases). Production: full URL to Render.
+// Development: use same-origin `/api` so Create React App's `package.json` "proxy" forwards to the backend (avoids cross-port CORS and mixed strict-browser cases). Production: full URL to Vercel.
 const defaultBaseURL =
   process.env.NODE_ENV === 'production'
-    ? 'https://event-management-system-sui.onrender.com/api'
+    ? 'https://event-management-system-sui.vercel.app/api'
     : '/api';
 
 // CRA inlines REACT_APP_* only; npm scripts map VITE_API_URL -> REACT_APP_API_URL before build/start.
 const api = axios.create({
+<<<<<<< HEAD
   baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
+=======
+  baseURL: process.env.NODE_ENV === 'production' ? 'https://event-management-system-sui.vercel.app/api' : '/api',
+  headers: { 'Content-Type': 'application/json' },
+>>>>>>> 4c78153 (Update API base URL and CORS for production deployment)
 });
 
 api.interceptors.request.use((config) => {
