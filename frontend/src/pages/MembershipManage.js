@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -13,7 +13,7 @@ const MembershipManage = () => {
   const [err, setErr] = useState('');
   const [msg, setMsg] = useState('');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [mRes, vRes] = await Promise.all([
         API.get('/admin/memberships'),
@@ -21,13 +21,18 @@ const MembershipManage = () => {
       ]);
       setMemberships(mRes.data);
       setVendors(vRes.data);
-      if (vRes.data.length > 0 && !form.vendorId) {
-        setForm(f => ({ ...f, vendorId: vRes.data[0]._id }));
-      }
+      setForm((f) => {
+        if (vRes.data.length > 0 && !f.vendorId) {
+          return { ...f, vendorId: vRes.data[0]._id };
+        }
+        return f;
+      });
     } catch (e) { console.error(e); }
-  };
+  }, []);
 
-  useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, []);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
