@@ -7,11 +7,11 @@ const defaultBaseURL =
     : '/api';
 
 // CRA inlines REACT_APP_* only; npm scripts map VITE_API_URL -> REACT_APP_API_URL before build/start.
-const API = axios.create({
+const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
 });
 
-API.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -19,7 +19,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-API.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -31,4 +31,4 @@ API.interceptors.response.use(
   }
 );
 
-export default API;
+export default api;
