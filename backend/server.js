@@ -13,16 +13,16 @@ connectDB().then(() => {
   initAdmin();
 });
 
-// Middleware — allow local dev and production frontend (override via CLIENT_ORIGIN)
-const corsOrigins = new Set([
-  'http://localhost:3000',
-  'https://event-management-system-sui.vercel.app',
-]);
-if (process.env.CLIENT_ORIGIN) {
-  process.env.CLIENT_ORIGIN.split(',').forEach((o) => {
-    const trimmed = o.trim();
-    if (trimmed) corsOrigins.add(trimmed);
-  });
+// Middleware — localhost always; add CLIENT_URL (comma-separated) or legacy CLIENT_ORIGIN; else default Vercel app
+const corsOrigins = new Set(['http://localhost:3000']);
+const clientUrls = (process.env.CLIENT_URL || process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+if (clientUrls.length) {
+  clientUrls.forEach((o) => corsOrigins.add(o));
+} else {
+  corsOrigins.add('https://event-management-system-sui.vercel.app');
 }
 app.use(cors({
   origin: [...corsOrigins],

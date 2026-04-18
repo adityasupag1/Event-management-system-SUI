@@ -5,6 +5,7 @@ const defaultBaseURL =
     ? 'https://event-management-system-sui.onrender.com/api'
     : 'http://localhost:5000/api';
 
+// CRA inlines REACT_APP_* only; npm scripts map VITE_API_URL -> REACT_APP_API_URL before build/start.
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL || defaultBaseURL,
 });

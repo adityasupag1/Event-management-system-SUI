@@ -10,9 +10,9 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "node scripts/cra-env.js start",
+    "build": "node scripts/cra-env.js build",
+    "test": "node scripts/cra-env.js test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
